@@ -1,0 +1,11 @@
+{
+  "required": "The {{field}} field is required.",
+  "email": "The {{field}} must be a valid email address.",
+  "minLength": "The {{field}} must be at least {{minimum}} characters long.",
+  "maxLength": "The {{field}} must be at most {{maximum}} characters long.",
+  "date": "The {{field}} must be a valid date.",
+  "passwordMismatch": "Passwords do not match.",
+  "passwordUppercase": "The {{field}} must contain an uppercase letter.",
+  "passwordLowercase": "The {{field}} must contain a lowercase letter.",
+  "passwordNumber": "The {{field}} must contain a number."
+}

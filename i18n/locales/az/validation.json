@@ -1,0 +1,11 @@
+{
+  "required": "{{field}} tələb olunur.",
+  "email": "Düzgün {{field}} formatı daxil edin.",
+  "minLength": "{{field}} ən azı {{minimum}} simvol olmalıdır.",
+  "maxLength": "{{field}} ən çox {{maximum}} simvol ola bilər.",
+  "date": "{{field}} düzgün tarix olmalıdır.",
+  "passwordMismatch": "Şifrələr uyğun gəlmir.",
+  "passwordUppercase": "{{field}} ən azı 1 böyük hərf olmalıdır.",
+  "passwordLowercase": "{{field}} ən azı 1 kiçik hərf olmalıdır.",
+  "passwordNumber": "{{field}} ən azı 1 rəqəm olmalıdır."
+}
