@@ -15,7 +15,7 @@ class AppResponse {
     return res.status(statusCode).json({
       statusCode,
       status: "success",
-      ...(message && { message }),
+      ...(message && { message: res.req.t(message) }),
       ...(data !== undefined && { data }),
     });
   }

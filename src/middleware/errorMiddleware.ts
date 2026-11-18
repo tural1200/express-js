@@ -3,7 +3,7 @@ import { AppError } from "../lib/appError";
 
 const errorMiddleware = (
   err: Error,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction,
 ) => {
@@ -11,14 +11,14 @@ const errorMiddleware = (
     return res.status(err.statusCode).json({
       statusCode: err.statusCode,
       status: err.status,
-      message: err.message,
+      message: req.t(err.message),
       ...(err.errors && { errors: err.errors }),
     });
   }
   return res.status(500).json({
     statusCode: 500,
     status: "error",
-    message: "An error occurred. Please contact administrator.",
+    message: req.t("auth:internalError"),
   });
 };
 

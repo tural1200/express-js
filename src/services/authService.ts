@@ -1,11 +1,13 @@
-import bcrypt from "bcrypt";
 import { AppError } from "../lib";
 import type { RegisterBody, LoginBody } from "../schemas/authSchema";
 import { generateToken } from "../lib/generateToken";
 import { decodeToken } from "../lib/decodeToken";
 import { createResetToken, hashResetToken } from "../lib/resetToken";
+import { hashPassword } from "../lib/hashPassword";
+import { compare } from "../lib/compare";
 import { UserRepository } from "../repositories/userRepository";
 import { PasswordResetTokenRepository } from "../repositories/passwordResetTokenRepository";
+import { EmailService } from "./emailService";
 
 class AuthService {
   static async register(body: RegisterBody) {
@@ -14,11 +16,10 @@ class AuthService {
     const userExists = await UserRepository.findByEmail(email);
 
     if (userExists) {
-      throw AppError.badRequest("This user already exist!");
+      throw AppError.badRequest("auth:userExists");
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await hashPassword(password);
 
     const user = await UserRepository.create({
       firstName,
@@ -34,12 +35,12 @@ class AuthService {
     const { email, password } = body;
     const user = await UserRepository.findByEmail(email);
 
-    if (!user) throw AppError.unauthorized("Invalid email or password.");
+    if (!user) throw AppError.unauthorized("auth:invalidCredentials");
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await compare(password, user.password);
 
     if (!isPasswordValid)
-      throw AppError.unauthorized("Invalid email or password.");
+      throw AppError.unauthorized("auth:invalidCredentials");
 
     const token = generateToken(user.id);
 
@@ -76,8 +77,7 @@ class AuthService {
       expiresAt,
     );
 
-    //TODO: update this with real email service
-    console.log(rawToken);
+    await EmailService.sendPasswordResetEmail(user.email, rawToken);
   }
 
   static async resetPassword(token: string, password: string) {
@@ -87,16 +87,39 @@ class AuthService {
 
     if (!resetToken) return null;
 
-    const hashedPassword = await bcrypt.hash(
-      password,
-      await bcrypt.genSalt(10),
-    );
+    const hashedPassword = await hashPassword(password);
 
     await PasswordResetTokenRepository.consumeAndUpdatePassword(
       resetToken.id,
       resetToken.userId,
       hashedPassword,
     );
+
+    return true;
+  }
+
+  static async changePassword({
+    userId,
+    oldPassword,
+    newPassword,
+  }: {
+    userId: string;
+    oldPassword: string;
+    newPassword: string;
+  }) {
+    const user = await UserRepository.findById(userId);
+
+    if (!user) throw AppError.unauthorized();
+
+    const isOldPasswordValid = await compare(oldPassword, user.password);
+
+    if (!isOldPasswordValid) {
+      throw AppError.unauthorized("auth:invalidOldPassword");
+    }
+
+    const newHashedPassword = await hashPassword(newPassword);
+
+    await UserRepository.updatePassword(userId, newHashedPassword);
 
     return true;
   }

@@ -1,14 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
-import { prisma } from "../../lib/prisma.ts";
 import { decodeToken } from "../lib/decodeToken.ts";
 import { AppError } from "../lib/appError.ts";
-
-interface AuthRequest {
-  user: {};
-}
+import { UserRepository } from "../repositories/userRepository.ts";
 
 const authMiddleware = async (
-  req: Request<AuthRequest>,
+  req: Request,
   _res: Response,
   next: NextFunction,
 ) => {
@@ -16,14 +12,13 @@ const authMiddleware = async (
 
   try {
     const decoded = decodeToken(req.cookies.jwt);
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-    });
+    const user = await UserRepository.findById(decoded.id);
 
     if (!user) {
       throw AppError.unauthorized();
     }
-    req.user = user;
+    const { password: _, ...safeUser } = user;
+    req.user = safeUser;
     next();
   } catch {
     throw AppError.unauthorized();

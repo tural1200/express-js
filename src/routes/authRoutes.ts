@@ -6,18 +6,22 @@ import {
   getProfile,
   forgotPassword,
   resetPassword,
+  changePassword,
 } from "../controllers/authController.ts";
 import { validationMiddleware } from "../middleware/validatationMiddleware.ts";
-import { loginSchema, registerSchema } from "../schemas/authSchema.ts";
-import { forgotPasswordSchema } from "../schemas/forgotPasswordSchema.ts";
-import resetPasswordSchema from "../schemas/resetPasswordSchema.ts";
+import { authMiddleware } from "../middleware/authmiddleware.ts";
+import {
+  changePasswordSchema,
+  forgotPasswordSchema,
+  loginSchema,
+  registerSchema,
+  resetPasswordSchema,
+} from "../schemas/authSchema.ts";
 
 const router = express.Router();
 
 router.post("/register", validationMiddleware(registerSchema), register);
 router.post("/login", validationMiddleware(loginSchema), login);
-router.post("/logout", logout);
-router.get("/profile", getProfile);
 router.post(
   "/forgot-password",
   validationMiddleware(forgotPasswordSchema),
@@ -27,6 +31,17 @@ router.post(
   "/reset-password",
   validationMiddleware(resetPasswordSchema),
   resetPassword,
+);
+
+router.use(authMiddleware);
+
+router.post("/logout", logout);
+router.get("/profile", getProfile);
+
+router.put(
+  "/change-password",
+  validationMiddleware(changePasswordSchema),
+  changePassword,
 );
 
 export default router;

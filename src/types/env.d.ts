@@ -9,6 +9,8 @@ declare global {
       JWT_EXPIRES_IN: SignOptions["expiresIn"];
       ACCESS_TOKEN_SECRET: string;
       REFRESH_TOKEN_SECRET: string;
+      EMAIL_FROM: string;
+      APP_URL: string;
     }
   }
 }

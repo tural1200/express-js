@@ -1,11 +1,11 @@
 const MESSAGES = {
-  BAD_REQUEST: "Bad request.",
-  UNAUTHORIZED: "Unauthorized.",
-  USER_EXISTS: "This user already exists.",
-  INVALID_CREDENTIALS: "Invalid email or password.",
-  FORBIDDEN: "Forbidden.",
-  NOT_FOUND: "Not found.",
-  VALIDATION_FAILED: "Validation failed.",
+  BAD_REQUEST: "auth:badRequest",
+  UNAUTHORIZED: "auth:unauthorized",
+  USER_EXISTS: "auth:userExists",
+  INVALID_CREDENTIALS: "auth:invalidCredentials",
+  FORBIDDEN: "auth:forbidden",
+  NOT_FOUND: "auth:notFound",
+  VALIDATION_FAILED: "auth:validationFailed",
 } as const;
 
 export { MESSAGES };
