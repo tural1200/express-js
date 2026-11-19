@@ -3,7 +3,7 @@ import { MESSAGES, HTTP_STATUS_CODES } from "../constants";
 class AppError extends Error {
   statusCode: number;
   status: "fail" | "error";
-  errors?: { field: string; message: string }[];
+  errors?: Record<string, string>;
 
   constructor({
     statusCode,
@@ -48,7 +48,7 @@ class AppError extends Error {
     });
   }
 
-  static validation(errors: { field: string; message: string }[]) {
+  static validation(errors: Record<string, string>) {
     const err = new AppError({
       statusCode: HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY,
       message: MESSAGES.VALIDATION_FAILED,

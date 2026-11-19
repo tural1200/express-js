@@ -4,6 +4,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       PORT: string;
+      CORS_ORIGIN: string;
       DATABASE_URL: string;
       JWT_SECRET: string;
       JWT_EXPIRES_IN: SignOptions["expiresIn"];

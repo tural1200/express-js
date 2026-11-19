@@ -4,6 +4,7 @@ import {
   update,
   getAll,
   updateMe,
+  deleteUser,
 } from "../controllers/userController.ts";
 import { authMiddleware } from "../middleware/authmiddleware.ts";
 import { validationMiddleware } from "../middleware/validatationMiddleware.ts";
@@ -24,5 +25,7 @@ router.patch("/update", validationMiddleware(updateUserSchema), update);
 router.patch("/me", validationMiddleware(updateMeSchema), updateMe);
 
 router.get("/", getAll);
+
+router.delete("/:id", deleteUser);
 
 export default router;

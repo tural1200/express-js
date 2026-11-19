@@ -5,7 +5,7 @@
   "maxLength": "{{field}} ən çox {{maximum}} simvol ola bilər.",
   "date": "{{field}} düzgün tarix olmalıdır.",
   "passwordMismatch": "Şifrələr uyğun gəlmir.",
-  "passwordUppercase": "{{field}} ən azı 1 böyük hərf olmalıdır.",
-  "passwordLowercase": "{{field}} ən azı 1 kiçik hərf olmalıdır.",
-  "passwordNumber": "{{field}} ən azı 1 rəqəm olmalıdır."
+  "passwordUppercase": "{{field}}də ən azı 1 böyük hərf olmalıdır.",
+  "passwordLowercase": "{{field}}ən azı 1 kiçik hərf olmalıdır.",
+  "passwordNumber": "{{field}}ən azı 1 rəqəm olmalıdır."
 }

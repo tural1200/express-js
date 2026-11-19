@@ -13,7 +13,7 @@ class AuthService {
   static async register(body: RegisterBody) {
     const { email, password, firstName, lastName, birthDate } = body;
 
-    const userExists = await UserRepository.findByEmail(email);
+    const userExists = await UserRepository.existsByEmail(email);
 
     if (userExists) {
       throw AppError.badRequest("auth:userExists");
@@ -27,6 +27,7 @@ class AuthService {
       email,
       password: hashedPassword,
       birthDate,
+      createdById: null,
     });
     return user;
   }

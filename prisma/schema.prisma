@@ -15,6 +15,12 @@ model User {
   lastName            String
   birthDate           String
   passwordResetTokens PasswordResetToken[]
+  createdById         String?
+  updatedById         String?
+  deletedById         String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime?
+  deletedAt           DateTime?
 }
 
 model PasswordResetToken {
